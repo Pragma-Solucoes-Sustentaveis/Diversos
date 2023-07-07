@@ -22,7 +22,7 @@ conexao = mysql.connector.connect(
 cursor = conexao.cursor()
 
 # Executando a consulta SQL para obter os dados da coluna
-consulta = f"select recupera2023.invoice.xml from recupera2023.invoice where recupera2023.invoice.id = any (select recupera2023.input.invoice from recupera2023.input where recupera2023.input.id = any (select recupera2023.goal_input.input from recupera2023.goal_input where recupera2023.goal_input.goal = any (select recupera2023.goal.id from recupera2023.goal where recupera2023.goal.state = 'SP' and recupera2023.goal.agreement = any (select recupera2023.agreement.id from recupera2023.agreement where recupera2023.agreement.year = 2022 and recupera2023.agreement.company = any (select recupera2023.company.id from recupera2023.company where recupera2023.company.group = 3)))));"
+consulta = f"select recupera2023.invoice.xml, recupera2023.invoice.invoice_id from recupera2023.invoice where recupera2023.invoice.id = any (select recupera2023.input.invoice from recupera2023.input where recupera2023.input.id = any (select recupera2023.goal_input.input from recupera2023.goal_input where recupera2023.goal_input.goal = any (select recupera2023.goal.id from recupera2023.goal where recupera2023.goal.state = 'SP' and recupera2023.goal.agreement = any (select recupera2023.agreement.id from recupera2023.agreement where recupera2023.agreement.year = 2022 and recupera2023.agreement.company = any (select recupera2023.company.id from recupera2023.company where recupera2023.company.group = 3)))));"
 cursor.execute(consulta)
 
 # Obtendo todos os resultados
@@ -35,7 +35,7 @@ for i, dado in enumerate(resultados):
     xml_string = str(dado[0])
 
     # Salvando o XML em um arquivo
-    nome_arquivo = f'dado_{i+1}.xml'
+    nome_arquivo = f'{str(dado[1])}.xml'
     with open(nome_arquivo, 'w') as arquivo:
         arquivo.write(xml_string)
     
