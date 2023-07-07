@@ -1,5 +1,4 @@
 import mysql.connector
-from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 import os
 from dotenv import load_dotenv
@@ -31,16 +30,10 @@ resultados = cursor.fetchall()
 
 # Iterando sobre os resultados e criando arquivos XML
 for i, dado in enumerate(resultados):
-    # Criando o elemento raiz do XML
-    raiz = Element('dados')
-    
-    # Criando o elemento do dado atual
-    elemento = SubElement(raiz, 'dado')
-    elemento.text = str(dado[0])
-    
+
     # Convertendo o XML para uma string formatada
-    xml_string = minidom.parseString(tostring(raiz)).toprettyxml(indent="    ")
-    
+    xml_string = str(dado[0])
+
     # Salvando o XML em um arquivo
     nome_arquivo = f'dado_{i+1}.xml'
     with open(nome_arquivo, 'w') as arquivo:
